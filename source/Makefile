@@ -18,13 +18,13 @@ XORRISOFLAGS = -as mkisofs -b limine-cd.bin \
 
 LD = ld
 AS = nasm
-TYSILA = tysila2
-CSC = csc
+AOT = tysila2
+CSC = mono-csc
 
-LDFLAGS = -T $(SOURCEDIR)/linker.ld -m elf_i386
-ASMFLAGS = 
-TYSILAFLAGS = --arch i586-elf-tysos -fno-rtti
-CSCFLAGS = -unsafe -target:exe -platform:x86
+LDFLAGS = -T $(SOURCEDIR)/linker.ld -m elf_x86_64 -z max-page-size=0x1000
+ASMFLAGS = -f elf64 
+AOTFLAGS = --arch x86_64-elf64-tysos -fno-rtti -fno-exceptions -q
+CSCFLAGS = -unsafe -target:exe -platform:x86 
 CSFILES = $(shell find $(SOURCEDIR)/ -type f -name '*.cs')
 ASMFILES = $(shell find $(SOURCEDIR)/ -type f -name '*.asm')
 OBJ = $(ASMFILES:.asm=_asm.o)
@@ -35,11 +35,11 @@ all: $(KERNEL) iso clean run
 
 $(KERNEL): $(OBJ)
 	$(CSC) $(CSCFLAGS) $(CSFILES) -out:$(KERNELEXE)
-	$(TYSILA) $(TYSILAFLAGS) -o $(KERNELO) $(KERNELEXE)
+	$(AOT) $(AOTFLAGS) $(KERNELEXE) -o $(KERNELO) 
 	$(LD) $(LDFLAGS) $(INTERNALLDFLAGS) $(OBJ) $(KERNELO) -o $@
 
 %_asm.o: %.asm
-	$(AS) $(ASMFLAGS) $^ -f elf32 -o $@
+	$(AS) $(ASMFLAGS) $^ -o $@
 
 iso:
 	cp $(KERNEL) $(BACKGROUND) $(SOURCEDIR)/../limine.cfg $(SOURCEDIR)/../limine/limine.sys \
