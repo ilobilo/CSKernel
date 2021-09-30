@@ -46,6 +46,7 @@ stivale_hdr:
 
 section .text
 kmain:
+    push rdi
     call _ZN6kernel6Kernel7ProgramM_0_8RealMain_Rv_P1PV26stivale2#2Bstivale2_struct
 
 sthrow:
