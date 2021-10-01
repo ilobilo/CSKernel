@@ -19,17 +19,33 @@ XORRISOFLAGS = -as mkisofs -b limine-cd.bin \
 		--efi-boot-image --protective-msdos-label
 
 LD = ld
+CXX = g++
 AS = nasm
 AOT = tysila2
 CSC = mono-csc
 
-LDFLAGS = -T $(SOURCEDIR)/linker.ld -m elf_x86_64 -z max-page-size=0x1000
 ASMFLAGS = -f elf64
 AOTFLAGS = --arch x86_64-elf64-tysos -fno-rtti -fno-exceptions
 CSCFLAGS = -unsafe -target:exe -platform:x86
+
+LDFLAGS = -T $(SOURCEDIR)/linker.ld -m elf_x86_64 -z max-page-size=0x1000
+CPPFLAGS =       \
+    	-I$(SOURCEDIR)       \
+    	-std=c++14           \
+    	-ffreestanding       \
+    	-fno-stack-protector \
+    	-fno-pic -fpie       \
+    	-mno-80387           \
+		-mno-mmx             \
+    	-mno-3dnow           \
+    	-mno-red-zone        \
+		-O3 -pipe -w
+
 CSFILES = $(shell find $(SOURCEDIR)/ -type f -name '*.cs')
+CPPFILES = $(shell find $(SOURCEDIR)/ -type f -name '*.cpp')
 ASMFILES = $(shell find $(SOURCEDIR)/ -type f -name '*.asm')
-OBJ = $(ASMFILES:.asm=_asm.o)
+OBJ = $(CPPFILES:.cpp=_cpp.o)
+OBJ += $(ASMFILES:.asm=_asm.o)
 
 .PHONY: all
 
@@ -41,6 +57,9 @@ $(KERNEL): $(OBJ)
 	$(CSC) $(CSCFLAGS) $(CSFILES) -out:$(KERNELEXE)
 	$(AOT) $(AOTFLAGS) $(KERNELEXE) -o $(KERNELO)
 	$(LD) $(LDFLAGS) $(INTERNALLDFLAGS) $(OBJ) $(KERNELO) -o $@
+
+%_cpp.o: %.cpp
+	$(CXX) $(CPPFLAGS) -c $< -o $@
 
 %_asm.o: %.asm
 	$(AS) $(ASMFLAGS) $^ -o $@
