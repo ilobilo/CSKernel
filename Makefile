@@ -4,6 +4,10 @@ all: limine
 	@mkdir -p $(KERNELDIR)/iso_root
 	@make -s -C $(KERNELDIR)/source
 
+bios: limine
+	@mkdir -p $(KERNELDIR)/iso_root
+	@make -s -C $(KERNELDIR)/source bios
+
 limine:
 	@git clone https://github.com/limine-bootloader/limine.git --single-branch --branch=latest-binary --depth=1
 	@make -C $(KERNELDIR)/limine
