@@ -17,7 +17,7 @@ namespace Kernel
             x = 0;
             y = 0;
         }
-        
+
         public static void Write(string s)
         {
             foreach(char c in s)
