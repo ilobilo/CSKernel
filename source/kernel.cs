@@ -3,6 +3,8 @@ namespace Kernel
     public unsafe class Program
     {
         public static stivale2.stivale2_struct_tag_framebuffer* frm_tag;
+        public static stivale2.stivale2_struct_tag_terminal* term_tag;
+
         public static void Main()
         {
             // Required dummy call
@@ -15,6 +17,7 @@ namespace Kernel
             if (stiv == null) while (true);
 
             frm_tag = (stivale2.stivale2_struct_tag_framebuffer*)stivale2.get_tag(stiv, stivale2.STIVALE2_STRUCT_TAG_FRAMEBUFFER_ID);
+            term_tag = (stivale2.stivale2_struct_tag_terminal*)stivale2.get_tag(stiv, stivale2.STIVALE2_STRUCT_TAG_TERMINAL_ID);
         }
     }
 }

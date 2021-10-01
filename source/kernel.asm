@@ -42,7 +42,7 @@ stivale_hdr:
     dq kmain
     dq stack_top
     dq (1 << 1)
-    dq stivale2_framebuffer_tag
+    dq stivale2_any_video_tag
 
 section .text
 kmain:

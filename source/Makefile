@@ -25,7 +25,7 @@ CSC = mono-csc
 
 LDFLAGS = -T $(SOURCEDIR)/linker.ld -m elf_x86_64 -z max-page-size=0x1000
 ASMFLAGS = -f elf64
-AOTFLAGS = --arch x86_64-elf64-tysos -fno-rtti -fno-exceptions -q
+AOTFLAGS = --arch x86_64-elf64-tysos -fno-rtti -fno-exceptions
 CSCFLAGS = -unsafe -target:exe -platform:x86
 CSFILES = $(shell find $(SOURCEDIR)/ -type f -name '*.cs')
 ASMFILES = $(shell find $(SOURCEDIR)/ -type f -name '*.asm')
