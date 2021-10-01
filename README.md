@@ -1,10 +1,10 @@
 # CSKernel
-C# kernel project template using multiboot and limine
+C# kernel using Stivale2 and limine
 
 # Building
 You will need these programs installed:
 * csc (from dotnet) or mono-csc (from mono)
-* mono (from mono)
+* mono (to run tysila2)
 * xorriso
 * ld
 * nasm
