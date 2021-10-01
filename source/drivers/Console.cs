@@ -7,7 +7,7 @@ namespace Kernel
         Green,
         Cyan,
         Red,
-        Magenta,
+        Purple,
         Brown,
         Grey,
         DarkGrey,
@@ -15,7 +15,7 @@ namespace Kernel
         LightGreen,
         LightCyan,
         LightRed,
-        LightMagenta,
+        LightPurple,
         Yellow,
         White,
     };
