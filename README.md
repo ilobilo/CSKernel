@@ -4,12 +4,12 @@ C# kernel using Stivale2 and limine
 # Building
 You will need these programs installed:
 * csc (from dotnet) or mono-csc (from mono)
-* mono (to run tysila2)
 * xorriso
 * ld
 * nasm
 * qemu-system-x86
-* tysila2 (deb package included in source)
+* tysila2 (deb package included in source
+* mono (to run tysila2)
   
 </br>
 Note: To install mono follow the instructions on</br>
