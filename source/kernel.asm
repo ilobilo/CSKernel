@@ -24,7 +24,7 @@ stivale2_framebuffer_tag:
     dw 0
     dw 32
 
-; Temporary text mode
+; Text mode
 stivale2_any_video_tag:
     dq 0xc75c9fa92a44c4db
     dq stivale2_smp_tag
@@ -42,7 +42,7 @@ stivale_hdr:
     dq kmain
     dq stack_top
     dq (1 << 1)
-    dq stivale2_any_video_tag
+    dq stivale2_framebuffer_tag
 
 section .text
 kmain:

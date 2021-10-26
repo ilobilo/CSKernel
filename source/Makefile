@@ -18,18 +18,19 @@ XORRISOFLAGS = -as mkisofs -b limine-cd.bin \
 		--efi-boot limine-eltorito-efi.bin -efi-boot-part \
 		--efi-boot-image --protective-msdos-label
 
-LD = ld
-CXX = g++
+LD = ld.lld
+CPP = clang++
 AS = nasm
 AOT = tysila2
-CSC = mono-csc
+CSC = mcs
 
 ASMFLAGS = -f elf64
 AOTFLAGS = --arch x86_64-elf64-tysos -fno-rtti -fno-exceptions
 CSCFLAGS = -unsafe -target:exe -platform:x86
 
 LDFLAGS = -T $(SOURCEDIR)/linker.ld -m elf_x86_64 -z max-page-size=0x1000
-CPPFLAGS =       \
+CPPFLAGS =                   \
+    	-target x86_64-pc-elf \
     	-I$(SOURCEDIR)       \
     	-std=c++14           \
     	-ffreestanding       \
@@ -39,7 +40,7 @@ CPPFLAGS =       \
 		-mno-mmx             \
     	-mno-3dnow           \
     	-mno-red-zone        \
-		-O3 -pipe -w
+		-O3 -pipe -Wno-everything
 
 CSFILES = $(shell find $(SOURCEDIR)/ -type f -name '*.cs')
 CPPFILES = $(shell find $(SOURCEDIR)/ -type f -name '*.cpp')
@@ -59,7 +60,7 @@ $(KERNEL): $(OBJ)
 	$(LD) $(LDFLAGS) $(INTERNALLDFLAGS) $(OBJ) $(KERNELO) -o $@
 
 %_cpp.o: %.cpp
-	$(CXX) $(CPPFLAGS) -c $< -o $@
+	$(CPP) $(CPPFLAGS) -c $< -o $@
 
 %_asm.o: %.asm
 	$(AS) $(ASMFLAGS) $^ -o $@
