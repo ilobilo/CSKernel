@@ -22,25 +22,26 @@ LD = ld.lld
 CPP = clang++
 AS = nasm
 AOT = tysila2
-CSC = mcs
+DOTNET = /usr/share/dotnet/dotnet
+CSC = /usr/share/dotnet/sdk/*/Roslyn/bincore/csc.dll
 
 ASMFLAGS = -f elf64
 AOTFLAGS = --arch x86_64-elf64-tysos -fno-rtti -fno-exceptions
-CSCFLAGS = -unsafe -target:exe -platform:x86
+CSCFLAGS = -unsafe -target:exe -platform:x86 -nostdlib /r:/usr/share/tysila2/mscorlib.dll
 
 LDFLAGS = -T $(SOURCEDIR)/linker.ld -m elf_x86_64 -z max-page-size=0x1000
-CPPFLAGS =                   \
-    	-target x86_64-pc-elf \
-    	-I$(SOURCEDIR)       \
-    	-std=c++14           \
-    	-ffreestanding       \
-    	-fno-stack-protector \
-    	-fno-pic -fpie       \
-    	-mno-80387           \
-		-mno-mmx             \
-    	-mno-3dnow           \
-    	-mno-red-zone        \
-		-O3 -pipe -Wno-everything
+CPPFLAGS =                \
+    -target x86_64-pc-elf \
+    -I$(SOURCEDIR)        \
+	-std=c++14            \
+    -ffreestanding        \
+    -fno-stack-protector  \
+    -fno-pic -fpie        \
+    -mno-80387            \
+	-mno-mmx              \
+    -mno-3dnow            \
+    -mno-red-zone         \
+	-O3 -pipe -Wno-everything
 
 CSFILES = $(shell find $(SOURCEDIR)/ -type f -name '*.cs')
 CPPFILES = $(shell find $(SOURCEDIR)/ -type f -name '*.cpp')
@@ -55,7 +56,7 @@ all: $(KERNEL) iso clean run
 bios: $(KERNEL) iso clean run-bios
 
 $(KERNEL): $(OBJ)
-	$(CSC) $(CSCFLAGS) $(CSFILES) -out:$(KERNELEXE)
+	$(DOTNET) $(CSC) $(CSCFLAGS) $(CSFILES) -out:$(KERNELEXE)
 	$(AOT) $(AOTFLAGS) $(KERNELEXE) -o $(KERNELO)
 	$(LD) $(LDFLAGS) $(INTERNALLDFLAGS) $(OBJ) $(KERNELO) -o $@
 
